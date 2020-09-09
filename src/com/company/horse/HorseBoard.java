@@ -24,7 +24,7 @@ public class HorseBoard {
         Y = 6;
         int[][] board = new int[X][Y];
         visited = new boolean[X][Y];
-        travel(board, 0, 0, 1);
+        travel(board, 4, 3, 1);
         for (int[] item : board){
             System.out.println(Arrays.toString(item));
         }
@@ -34,6 +34,7 @@ public class HorseBoard {
         board[x][y] = step;
         visited[x][y] = true;
         ArrayList<Point> next = next(new Point(x, y));
+        sort(next);
         for (Point point : next) {
             if (!visited[point.x][point.y]){
                 travel(board, point.x, point.y, step + 1);
@@ -76,5 +77,18 @@ public class HorseBoard {
             points.add(new Point(point));
         }
         return points;
+    }
+
+    /**
+     * 使用贪心算法优化
+     * 对ps中所有的point的下一步的所有集合数目，进行非递减排序
+     * @param ps
+     */
+    public static void sort(ArrayList<Point> ps) {
+        ps.sort((o1, o2) ->{
+            int count1 = next(o1).size();
+            int count2 = next(o2).size();
+            return Integer.compare(count1, count2);
+        });
     }
 }
